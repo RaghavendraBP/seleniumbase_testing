@@ -36,10 +36,5 @@ public class CommonUtilityUI {
 		driver.findElement(By.xpath("//button[@id='clear-now']")).sendKeys(Keys.ENTER);
 	}
 
-	public static String convertFileIntoString(String file)throws Exception
-	{
-		String result;
-		result = new String(Files.readAllBytes(Paths.get(file)));
-		return result;
-	}
+	
 }
