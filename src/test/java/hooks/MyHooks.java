@@ -23,14 +23,14 @@ public class MyHooks {
 		GetPropertyValues properties = new GetPropertyValues();
 		String browserValue = properties.getPropValues("browser");
 		if(browserValue.equalsIgnoreCase("chrome")) {
-			System.setProperty("webdriver.chrome.driver", "C:/Users/004A57744/Workspace/seleniumbase_testing/src/test/resources/Drivers/chromedriver.exe"); 
+			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/src/test/resources/Drivers/chromedriver.exe"); 
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			driver = new ChromeDriver(options);
 			CommonUtilityUI.ClearBrowserCacheForChrome(driver);
 		} 
 		else if(browserValue.equalsIgnoreCase("edge")){
-			System.setProperty("webdriver.edge.driver", "C:/Users/004A57744/Workspace/seleniumbase_testing/src/test/resources/Drivers/edgedriver.exe");
+			System.setProperty("webdriver.edge.driver", System.getProperty("user.dir")+"/src/test/resources/Drivers/edgedriver.exe");
 			EdgeOptions edgeOptions = new EdgeOptions();
 			
 			edgeOptions.addArguments("--remote-allow-origins=*");
@@ -43,7 +43,7 @@ public class MyHooks {
 		}
 
 		driver.manage().window().maximize();
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 	}
 
 
