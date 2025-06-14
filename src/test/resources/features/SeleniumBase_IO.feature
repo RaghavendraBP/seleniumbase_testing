@@ -1,7 +1,7 @@
 @All
 Feature: Selenium Base Demo Page
 
-    @abc 
+  @abc 
   Scenario Outline: Automate the Selenium Base Demo Page
     Given Navigate to Selenium Base Demo Page
     Then Requested functionalities for "<TextInputField>", "<SelectDropdown>" and other fields should be working as Expected

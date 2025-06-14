@@ -23,15 +23,11 @@ public class SeleniumBase {
 	private WebElement TextInputFieldTextbox;
 	
 	@CacheLookup
-	@FindBy(how = How.XPATH, using = "//input[@id='checkBox6']")
-	private WebElement iFrameCheckbox;
-	
-	@CacheLookup
 	@FindBy(how = How.XPATH, using = "//select[@id='mySelect']")
 	private WebElement SelectDropdown;
 	
 	@CacheLookup
-	@FindBy(how = How.ID, using = "svgRect")
+	@FindBy(how = How.XPATH, using = "//*[name()='svg' and @id='mySVG']/*[name()='rect']")
 	private WebElement HTMLSVGwithrectColorBox;
 	
 	@CacheLookup
@@ -51,15 +47,16 @@ public class SeleniumBase {
 		
 	public void test_operations(String TextFieldInput, String dropdownvalue) throws InterruptedException
 	{
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-		driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(30));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		driver.manage().timeouts().scriptTimeout(Duration.ofSeconds(20));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		
 		Common.waitFor(driver, By.xpath("//input[@id='myTextInput']"));  
 		
 		TextInputFieldTextbox.sendKeys(TextFieldInput);
+		Thread.sleep(1000);
 		
-		if(TextInputFieldTextbox.getDomAttribute("value").equals(TextFieldInput))
+		if(TextInputFieldTextbox.getDomProperty("value").equals(TextFieldInput))
 			System.out.println("Text Input Field is filled with the value:" +TextFieldInput);
 		else
 		{
@@ -67,17 +64,21 @@ public class SeleniumBase {
 			Assert.fail("Text Input Field is NOT filled with the value:" +TextFieldInput);
 		}
 		
-		String rgb_color = HTMLSVGwithrectColorBox.getCssValue("background-color");
+		String rgb_color = HTMLSVGwithrectColorBox.getCssValue("fill");
 		
 		Color color = Color.fromString(rgb_color);
         String actualColor_Hex = color.asHex();
         
-        System.out.println("rgb color for HTML SVG with rect: is" +rgb_color);
+        System.out.println("rgb color for HTML SVG with rect: is: " +rgb_color);
         System.out.println("rgb color for HTML SVG with rect: in Hex format is:" +actualColor_Hex);
         
-        iFrameCheckbox.click();
+        driver.switchTo().frame(2);
         
-        if(iFrameCheckbox.isSelected())
+        WebElement iframeCheckbox = driver.findElement(By.xpath("//input[contains(@id,'checkBox')]"));
+        
+        iframeCheckbox.click();
+        
+        if(iframeCheckbox.isSelected())
         	System.out.println("CheckBox in the iFrame is Checked");
 		else
 		{
@@ -85,9 +86,12 @@ public class SeleniumBase {
 			Assert.fail("CheckBox in the iFrame is NOT Checked");
 		}
         
+        driver.switchTo().defaultContent();
+        
         Select sel = new Select(SelectDropdown);
         
         sel.selectByVisibleText("Set to 50%");
+        Thread.sleep(1000);
         
         String HTMLMeter_Label_Selected = HTMLMeterLabel.getText();
         String HTMLMeter_Poll = HTMLMeterPoll.getDomAttribute("value");
@@ -96,12 +100,18 @@ public class SeleniumBase {
         strArray[1] = strArray[1].trim();
         
         strArray[1] = strArray[1].replace("(", "");
-        String HTMLMeter_Label__Selected_Percentage = strArray[1].replace(")", "");
+        String HTMLMeter_Label_Selected_Percentage = strArray[1].replace(")", "");
         
-        Assert.assertEquals(HTMLMeter_Label__Selected_Percentage, "25%");
-        Assert.assertEquals(HTMLMeter_Poll, "0.25");
+        Assert.assertEquals(HTMLMeter_Label_Selected_Percentage, "50%");
+        Assert.assertEquals(HTMLMeter_Poll, "0.5");
         
-        
+        if(HTMLMeter_Poll.equals("0.5"))
+        	System.out.println("HTMLMeter Poll is set to 50% when Set to 50% is selected in Select Dropdown");
+        else
+        {
+        	System.out.println("HTMLMeter Poll is NOT set to 50% when Set to 50% is selected in Select Dropdown");
+            Assert.fail("HTMLMeter Poll is NOT set to 50% when Set to 50% is selected in Select Dropdown");
+        }
 	}
 	
 	

@@ -19,9 +19,9 @@ import com.bmw.sch.SMTPNotificationEmailService;
 
 @CucumberOptions(
 
-		features = "src/test/resources/features/EPDN_Admin_Role.feature",
+		features = "src/test/resources/features/SeleniumBase_IO.feature",
 		glue = {"stepDefinitions", "hooks"},
-		plugin = {"pretty","html:target/EPDN_Admin_Role.html", "json:target/EPDN_Admin_Role.json"},
+		plugin = {"pretty","html:target/SeleniumBase_IO.html", "json:target/SeleniumBase_IO.json"},
 		tags = "@abc")
 
 

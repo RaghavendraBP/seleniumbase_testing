@@ -27,8 +27,7 @@ public class SeleniumBaseStepDefinition {
 		String URL = properties.getPropValues("url");
 		driver.get(URL);
 	}
-	
-	
+		
 	@Then("Requested functionalities for {string}, {string} and other fields should be working as Expected")
 	public void validate_functionalities_in_Selenium_Base_Demo_Page(String TextInputField, String SelectDropdown) throws InterruptedException, IOException
 	{
